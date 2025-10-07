@@ -1,0 +1,251 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                width: 320px;
+                min-height: 250px;
+                background: #1a1a1a;
+                color: #e0e0e0;
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
+                    sans-serif;
+                font-size: 0.9rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .header {
+                text-align: center;
+                margin-bottom: 1.1rem;
+                padding-bottom: 0.7rem;
+                border-bottom: 1px solid #333;
+            }
+
+            .title {
+                color: #ff6b6b;
+                font-size: 1.1rem;
+                font-weight: 600;
+            }
+
+            .subtitle {
+                color: #888;
+                font-size: 0.9rem;
+                margin-top: 4px;
+            }
+
+            .add-section {
+                display: flex;
+                gap: 0.47rem;
+                margin-bottom: 1.2rem;
+                padding: 0.7rem;
+                background: #2a2a2a;
+                border-radius: 0.7rem;
+                border: 1px solid #333;
+            }
+
+            #domainInput {
+                flex: 1;
+                background: #1a1a1a;
+                border: 1px solid #3a3a3a;
+                color: #e0e0e0;
+                padding: 10px 12px;
+                border-radius: 6px;
+                font-size: 14px;
+                font-family: "SF Mono", Monaco, "Cascadia Code", monospace;
+                transition: border-color 0.2s;
+            }
+
+            #domainInput:focus {
+                outline: none;
+                border-color: #ff6b6b;
+                box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
+            }
+
+            #domainInput::placeholder {
+                color: #666;
+            }
+
+            #addBtn {
+                background: #ff6b6b;
+                color: #1a1a1a;
+                border: none;
+                border-radius: 6px;
+                padding: 10px 16px;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: bold;
+                transition: all 0.2s;
+                min-width: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            #addBtn:hover {
+                background: #ff5252;
+                transform: translateY(-1px);
+            }
+
+            #addBtn:active {
+                transform: translateY(0);
+            }
+
+            .domains-section {
+                border-top: 1px solid #333;
+                padding-top: 16px;
+            }
+
+            .section-title {
+                color: #ccc;
+                font-size: 13px;
+                font-weight: 600;
+                margin-bottom: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .domains-list {
+                max-height: 250px;
+                overflow-y: auto;
+            }
+
+            .domain-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px 8px;
+                border-bottom: 1px solid #2a2a2a;
+                transition: background-color 0.2s;
+                border-radius: 4px;
+                margin-bottom: 2px;
+            }
+
+            .domain-item:hover {
+                background-color: #252525;
+            }
+
+            .domain-item:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+            }
+
+            .domain-name {
+                font-family: "SF Mono", Monaco, "Cascadia Code", monospace;
+                color: #ffffff;
+                font-size: 0.77rem;
+                flex: 1;
+                word-break: break-all;
+                margin-right: 12px;
+            }
+
+            .remove-btn {
+                background: transparent;
+                color: #ff6b6b;
+                border: 1px solid #ff6b6b;
+                border-radius: 4px;
+                padding: 6px 10px;
+                cursor: pointer;
+                font-size: 12px;
+                font-weight: bold;
+                transition: all 0.2s;
+                min-width: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .remove-btn:hover {
+                background: #ff6b6b;
+                color: #1a1a1a;
+            }
+
+            .empty-state {
+                text-align: center;
+                color: #666;
+                padding: 30px 20px;
+                font-style: italic;
+                font-size: 13px;
+            }
+
+            .error-state {
+                text-align: center;
+                color: #ff6b6b;
+                padding: 30px 20px;
+                font-size: 13px;
+                background: rgba(255, 107, 107, 0.1);
+                border-radius: 6px;
+                border: 1px solid rgba(255, 107, 107, 0.2);
+            }
+
+            /* Scrollbar personalizada */
+            .domains-list::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            .domains-list::-webkit-scrollbar-track {
+                background: #2a2a2a;
+                border-radius: 3px;
+            }
+
+            .domains-list::-webkit-scrollbar-thumb {
+                background: #444;
+                border-radius: 3px;
+            }
+
+            .domains-list::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
+
+            /* Indicador de estado */
+            .status-indicator {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: #4caf50;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <div class="title">SayNoToImpulse</div>
+                <div class="subtitle">
+                    Say NO to the Impulse of Open a Website
+                </div>
+            </div>
+
+            <div class="add-section">
+                <input
+                    type="text"
+                    id="domainInput"
+                    placeholder="example: youtube.com"
+                    autocomplete="off"
+                    spellcheck="false"
+                />
+                <button id="addBtn" title="Add domain">+</button>
+            </div>
+
+            <div class="domains-section">
+                <div class="section-title">Blocked Sites</div>
+                <div class="domains-list" id="domainsList">
+                    <div class="empty-state">Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <script src="/scripts/popup.js"></script>
+    </body>
+</html>
